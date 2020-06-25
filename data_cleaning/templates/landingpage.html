@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset='utf-8'>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap-4.4.1-dist/css/bootstrap.min.css') }}"/>
+        <link rel="stylesheet" href="{{ url_for('static', filename='fontawesome-free-5.13.0-web/css/all.min.css') }}"/>
+        <title>Data Cleaning</title>
+    </head>
+    <body>
+        <div id="main-container" class="container-lg">
+            {% include 'loadfiles.html' %}
+        </div>
+        <script src="{{ url_for('static', filename='jquery-3.5.0.min.js') }}"></script>
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+        <script src="{{ url_for('static', filename='popper.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='bootstrap-4.4.1-dist/js/bootstrap.min.js') }}"></script>
+        <script  type="text/javascript" src="{{ url_for('static', filename='loadfiles.js') }}"></script>
+    </body>
+</html>

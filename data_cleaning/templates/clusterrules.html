@@ -1,0 +1,61 @@
+<div>
+    <p><i>Clustering will find groups of strings that are likely to represent the same thing.</i></p>
+    <!-- (un)select cluster columns -->
+    <h6>Select the columns that need to be clustered:</h6>
+    <form>
+        {% for col in clustercolumns %}
+        <div class='form-check'>
+            {% if col in clusters %}
+            <input class='form-check-input clustercolumns' type="checkbox" id="{{ col }}" value="{{ col }}" name="clustercolumn" disabled>
+            {% else %}
+            <input class='form-check-input clustercolumns' type="checkbox" id="{{ col }}" value="{{ col }}" name="clustercolumn" checked>
+            {% endif %}
+            <label class="form-check-label" for="{{ col }}">
+             {{ col }}
+            </label>
+        </div>
+        {% endfor %}
+        {% for col in nonclustercolumns %}
+        <div class='form-check'>
+            {% if col in clusters %}
+            <input class='form-check-input clustercolumns' type="checkbox" id="{{ col }}" value="{{ col }}" name="clustercolumn" disabled>
+            {% else %}
+            <input class='form-check-input clustercolumns' type="checkbox" id="{{ col }}" value="{{ col }}" name="clustercolumn">
+            {% endif %}
+            <label class="form-check-label" for="{{ col }}">
+             {{ col }}
+            </label>
+        </div>
+        {% endfor %}
+    </form>
+    <button id="start-clustering" class="btn btn-outline-dark" style="float: right; margin-top: 20px;" data-table="{{ tablename }}">Cluster column(s)</button>
+    <!-- List of all columns that already have been clustered. -->
+    <h6 style="margin-top: 20px;clear:right;">List of clustered columns:</h6>
+    {% if clusters | length == 0 %}
+        <p>You haven't clustered any column yet.</p>
+    {% else %}
+        <ul>
+        {% for columnname, clusters_of_column in clusters.items() %}
+            <li>
+                <button type="button" class="btn btn btn-link btn-sm" data-toggle="modal" data-target="#clusters-{{ columnname }}">
+                {{ columnname }}
+                </button>
+            </li>
+        {% endfor %}
+        </ul>
+        {% for columnname, clusters_of_column in clusters.items()  %}
+            <div class="modal fade" id="clusters-{{ columnname }}" tabindex="-1" role="dialog" aria-labelledby="clusters-{{ columnname }}Label" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                    {% include 'clusters.html' %}
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>

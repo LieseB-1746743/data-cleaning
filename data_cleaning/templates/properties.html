@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% block head %}
+{% endblock head %}
+{% block title %}
+{{ tablename }} properties
+{% endblock title %}
+{% block content %}
+<h2>{{ tablename }}: properties</h2>
+{% for colname, colprops in properties.items() %}
+    <div class="card border-light mb-3" style="margin-top: 30px;">
+        <h6 class="card-header">{{ colname }}</h6>
+        <div class="card-body">
+            <div class="row">
+                <div class="col">
+                <table class="table table-borderless table-sm">
+                    <tbody>
+                        {% for propname, propvalue in colprops.items() %}
+                        <tr>
+                            <td style="width: 130px;">{{ propname }}:</td>
+                            <td>{{ propvalue }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="NullAction-{{ colname }}">On NULL value detection:</label>
+                        <select id="NullAction-{{ colname }}" class="form-control null-action"  data-column="{{ colname }}" data-table="{{ tablename }}">
+                            <option value=1 {{ "selected='selected'" if on_null_detect[colname]==1 else '' }}>Flag</option>
+                            <option value=2 {{ "selected='selected'" if on_null_detect[colname]==2 else '' }}>Remove row</option>
+                            <option value=3 {{ "selected='selected'" if on_null_detect[colname]==3 else '' }}>Ignore</option>
+                        </select>
+                    </div>
+                    {% if colname in outlier_detection %}
+                    {% if colname in date_rules %}
+                    <label for="daterange-{{ colname }}">Non-outlier range:</label>
+                    <div class="row outlier-range" style="margin-bottom: 10px;">
+                        <p id="tablename" hidden>{{ tablename }}</p>
+                        <div class="col">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="from-{{ colname }}">From</span>
+                                </div>
+                                <input type="date" class="form-control min" id="range-{{ colname }}" value="{{ outlier_detection[colname]['min'] }}" aria-describedby="from-{{ colname }}" data-column="{{ colname }}"  data-table="{{ tablename }}" data-type="date" data-previousvalue="{{ outlier_detection[colname]['min'] }}"/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="to-{{ colname }}">To</span>
+                                </div>
+                                <input type="date" class="form-control max" id="range-{{ colname }}" value="{{ outlier_detection[colname]['max'] }}" aria-describedby="to-{{ colname }}" data-column="{{ colname }}"  data-table="{{ tablename }}" data-type="date" data-previousvalue="{{ outlier_detection[colname]['max'] }}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="OutlierAction-{{ colname }}">On outlier detection:</label>
+                        <select id="OutlierAction-{{ colname }}" class="form-control outlier-action" data-column="{{ colname }}" data-table="{{ tablename }}">
+                            <option value=1 {{ "selected='selected'" if outlier_detection[colname]['action']==1 else '' }}>Flag</option>
+                            <option value=2 {{ "selected='selected'" if outlier_detection[colname]['action']==2 else '' }}>Replace outlier value by NULL</option>
+                            <option value=3 {{ "selected='selected'" if outlier_detection[colname]['action']==3 else '' }}>Remove row</option>
+                            <option value=4 {{ "selected='selected'" if outlier_detection[colname]['action']==4 else '' }}>Ignore</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="FutureDateAction-{{ colname }}">On future date detection:</label>
+                        <select id="FutureDateAction-{{ colname }}" class="form-control futuredate-action" data-column="{{ colname }}" data-table="{{ tablename }}">
+                            <option value=1 {{ "selected='selected'" if date_rules[colname]['action'].value==1 else '' }}>Flag</option>
+                            <option value=2 {{ "selected='selected'" if date_rules[colname]['action'].value==2 else '' }}>Replacy future date by NULL</option>
+                            <option value=3 {{ "selected='selected'" if date_rules[colname]['action'].value==3 else '' }}>Remove row</option>
+                            <option value=4 {{ "selected='selected'" if date_rules[colname]['action'].value==4 else '' }}>Ignore</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="DateFormat-{{ colname }}">Default date format:</label>
+                        <select id="DateFormat-{{ colname }}" class="form-control date-format" data-column="{{ colname }}" data-table="{{ tablename }}">
+                            {% for id, format_code in date_format_codes.items() %}
+                                <option value="{{ id }}" {{ "selected='selected'" if date_rules[colname]['format']==id else '' }}>{{ format_code['example'] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    {% else %}
+                    <label for="range-{{ colname }}">Non-outlier range:</label>
+                    <div class="row outlier-range" style="margin-bottom: 10px;">
+                        <p id="tablename" hidden>{{ tablename }}</p>
+                        <div class="col">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="from-{{ colname }}">From</span>
+                                </div>
+                                <input type="number" step="0.01" class="form-control min" id="range-{{ colname }}" value="{{ outlier_detection[colname]['min'] }}" aria-describedby="from-{{ colname }}" data-column="{{ colname }}"  data-table="{{ tablename }}" data-type="number" data-previousvalue="{{ outlier_detection[colname]['min'] }}"/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="to-{{ colname }}">To</span>
+                                </div>
+                                <input type="number" step="0.01" class="form-control max" id="range-{{ colname }}" value="{{ outlier_detection[colname]['max'] }}" aria-describedby="to-{{ colname }}" data-column="{{ colname }}"  data-table="{{ tablename }}" data-type="number" data-previousvalue="{{ outlier_detection[colname]['max'] }}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="OutlierAction-{{ colname }}">On outlier detection:</label>
+                        <select id="OutlierAction-{{ colname }}" class="form-control outlier-action" data-column="{{ colname }}" data-table="{{ tablename }}">
+                            <option value=1 {{ "selected='selected'" if outlier_detection[colname]['action']==1 else '' }}>Flag</option>
+                            <option value=2 {{ "selected='selected'" if outlier_detection[colname]['action']==2 else '' }}>Replace outlier value by NULL</option>
+                            <option value=3 {{ "selected='selected'" if outlier_detection[colname]['action']==3 else '' }}>Remove row</option>
+                            <option value=4 {{ "selected='selected'" if outlier_detection[colname]['action']==4 else '' }}>Ignore</option>
+                        </select>
+                    </div>
+                    {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+{% endblock content %}
+{% block scripts %}
+    <script type="text/javascript" src="{{ url_for('static', filename='properties.js') }}"></script>
+{% endblock scripts %}

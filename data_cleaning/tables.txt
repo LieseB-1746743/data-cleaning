@@ -1,0 +1,5 @@
+G:/Mijn Drive/DataCleaning_FrankNeven_2020/demo/patients.csv
+G:/Mijn Drive/DataCleaning_FrankNeven_2020/demo/visits.csv
+G:/Mijn Drive/DataCleaning_FrankNeven_2020/demo/relapses.csv
+G:/Mijn Drive/DataCleaning_FrankNeven_2020/demo/treatment.csv
+G:/Mijn Drive/DataCleaning_FrankNeven_2020/demo/MRI.csv

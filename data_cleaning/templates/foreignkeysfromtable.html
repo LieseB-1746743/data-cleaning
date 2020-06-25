@@ -1,0 +1,36 @@
+{% if foreign_keys | length == 0 %}
+    <p>No foreign key constraints found in this table.</p>
+{% else %}
+    <table class="table table-hover table-sm">
+        <thead>
+            <th scope="col">Select</th>
+            <th scope="col">Type</th>
+            <th scope="col">From table</th>
+            <th scope="col">From column</th>
+            <th scope="col">To table</th>
+            <th scope="col">To column</th>
+            <th scope="col">Valid for</th>
+        </thead>
+        <tbody>
+            {% for fk in foreign_keys %}
+            <tr>
+                {% if fk.checked %}
+                <td><input type="checkbox" class="foreignkey checkbox" value="{{ fk.id }}" checked></td>
+                {% else %}
+                <td><input type="checkbox" class="foreignkey checkbox" value="{{ fk.id }}"></td>
+                {% endif %}
+                {% if fk.type == "object" %}
+                    <td>string</td>
+                {% elif fk.type == "float64" or fk.type == "int64" %}
+                    <td>number</td>
+                {% endif %}
+                <td>{{ fk.from_table }}</td>
+                <td>{{ fk.from_column }}</td>
+                <td>{{ fk.to_table }}</td>
+                <td>{{ fk.to_column }}</td>
+                <td>{{ fk.percentage }} %</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}

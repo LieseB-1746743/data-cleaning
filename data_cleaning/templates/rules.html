@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block head %}
+{% endblock head %}
+{% block title %}
+{{ tablename }} rules
+{% endblock title %}
+{% block content %}
+<div style="display: flex; flex-direction: row; align-items: flex-start; justify-content: space-between;">
+<h2 style="margin-bottom: 20px;">{{ tablename }}: rules</h2>
+<button id="clean" data-table="{{ tablename }}" class="btn btn-primary">Clean</button>
+</div>
+<div class="row">
+    <div class="col-3">
+        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <a class="nav-link active" id="dc-tab" data-toggle="pill" href="#dc" role="tab" aria-controls="dc" aria-selected="true">&lt-relations</a>
+            <a class="nav-link" id="clusterrules-tab" data-toggle="pill" href="#clusterrules" role="tab" aria-controls="clusterrules" aria-selected="false">Clustering</a>
+            <a class="nav-link" id="foreignkeys-tab" data-toggle="pill" href="#foreignkeys" role="tab" aria-controls="foreignkeys" aria-selected="false">Foreign Keys</a>
+            <a class="nav-link" id="uniqueconstraints-tab" data-toggle="pill" href="#uniqueconstraints" role="tab" aria-controls="uniqueconstraints" aria-selected="false">Unique Constraints</a>
+            <a class="nav-link" id="fds-tab" data-toggle="pill" href="#fds" role="tab" aria-controls="fds" aria-selected="false">Functional Dependencies</a>
+        </div>
+        <p id="tablename" hidden>{{ tablename }}</p>
+    </div>
+    <div class="col-9">
+        <div class="tab-content" id="v-pills-tabContent">
+            <div class="tab-pane fade show active" id="dc" role="tabpanel" aria-labelledby="dc-tab">
+                {% include 'denialconstraints.html' %}
+            </div>
+            <div class="tab-pane fade" id="clusterrules" role="tabpanel" aria-labelledby="clusterrules-tab">
+                {% include 'clusterrules.html' %}
+            </div>
+            <div class="tab-pane fade" id="foreignkeys" role="tabpanel" aria-labelledby="foreignkeys-tab">
+                {% include 'foreignkeysfromtable.html' %}
+            </div>
+            <div class="tab-pane fade" id="uniqueconstraints" role="tabpanel" aria-labelledby="uniqueconstraints-tab">
+                {% include 'uniqueconstraints.html' %}
+            </div>
+            <div class="tab-pane fade" id="fds" role="tabpanel" aria-labelledby="fds-tab">
+                {% include 'functionaldependencies.html' %}
+            </div>
+        </div>
+    </div>
+    <div id="clean-success" class="alert alert-success alert-dismissible fade show" role="alert" style="display: none; position: fixed; top: 0; right: 0;">
+        <p id="success-cleaned-message"></p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div id="clean-error" class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none; position: fixed; top: 0; right: 0;">
+        <p id="error-cleaned-message"></p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</div>
+{% endblock content %}
+{% block scripts %}
+    <script type="text/javascript" src="{{ url_for('static', filename='setrules.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='setforeignkeys.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='clusters.js') }}"></script>
+{% endblock scripts %}

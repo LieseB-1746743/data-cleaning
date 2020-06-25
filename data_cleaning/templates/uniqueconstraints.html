@@ -1,0 +1,33 @@
+<p><i>A unique constraint on a set of columns ensures that the data stored in that set of columns is unique among all rows in the table.
+    Violations on these constraints can be seen as duplicates.
+    To choose what needs to happen when duplicate rows are being detected, go to settings or click <a href="{{ url_for('settings') }}">here</a> and change the 'on duplicate detect' action.</i></p>
+<!-- Code for adding a new unique constraint -->
+<h6>Add a new unique constraint:</h6>
+<div id="uniqueConstraintForm">
+        {% for column in columns %}
+        <div class="form-check form-check-inline" style="min-width: 250px;">
+            <input class="form-check-input" type="checkbox" value="{{ column }}" id="checkbox-{{ column }}" name="column">
+            <label class="form-check-label" for="checkbox-{{ column }}">
+            {{ column }}
+            </label>
+        </div>
+        {% endfor %}
+    <button id="addUniqueConstraint" class="btn btn-outline-dark" style="float: right; margin-top: 20px;"><i class="fas fa-plus"></i> Add</button>
+</div>
+<p id="tablename" hidden>{{ tablename }}</p>
+<!-- List all existing unique constraints -->
+<h6 style="clear: right;">Unique constraints:</h6>
+<ul id="uniqueConstraints">
+    {% if uniqueconstraints | length == 0 %}
+        <li id="noUniqueConstraints">You haven't added any unique constraints yet.</li>
+    {% else %}
+    {% for key, constraint in uniqueconstraints.items() %}
+        <li id="{{ key }}">
+            {% for item in constraint %}
+            {{ item }},
+            {% endfor %}
+            <button class="deleteUniqueConstraint btn btn-sm" value="{{ key }}"><i class="fas fa-trash-alt"></i></button>
+        </li>
+    {% endfor %}
+    {% endif %}
+</ul>

@@ -1,0 +1,31 @@
+{% if denialconstraints|length > 0 %}
+<div class="table-responsive">
+    <table class="table table-hover table-sm">
+        <thead>
+            <th scope="col">Select</th>
+            <th scope="col">Column x</th>
+            <th scope="col">&lt=</th>
+            <th scope="col">Column y</th>
+            <th scope="col">Valid for</th>
+        </thead>
+        <tbody>
+            {% for dc in denialconstraints %}
+            <tr>
+                {% if dc.id in selected_dc %}
+                    <td><input type="checkbox" class="denialconstraint" value="{{ dc.id }}" checked></td>            
+                {% else %}
+                    <td><input type="checkbox" class="denialconstraint" value="{{ dc.id }}"></td>
+                {% endif %}
+                <td>{{ dc.small_column }}</td>
+                <td>&lt=</td>
+                <td>{{ dc.big_column }}</td>
+                <td>{{ dc.percentage }} %</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<p>No &lt-relations found.</p>
+{% endif %}
+<p id="tablename" hidden>{{ tablename }}</p>

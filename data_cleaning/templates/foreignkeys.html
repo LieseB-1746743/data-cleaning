@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block head %}
+{% endblock head %}
+{% block title %}
+Foreign Keys
+{% endblock title %}
+{% block content %}
+<div>
+    <h2>Foreign Keys</h2>
+    <p><i>A foreign key constraint from column X in one table to column Y in another table requires that every value in column X must exist in column Y. Column Y must have a unique constraint, so all values in that column need to be different.</i></p>
+{% if foreign_keys | length == 0 %}
+  <p>No foreign keys have been found.</p>
+{% else %}
+  <table class="table table-hover table-sm">
+      <thead>
+          <th scope="col">Select</th>
+          <th scope="col">Type</th>
+          <th scope="col">From table</th>
+          <th scope="col">From column</th>
+          <th scope="col">To table</th>
+          <th scope="col">To column</th>
+          <th scope="col">Valid for</th>
+      </thead>
+      <tbody>
+          {% for fk in foreign_keys %}
+            <tr>
+                {% if fk.checked %}
+                <td><input type="checkbox" class="foreignkey checkbox" value="{{ fk.id }}" checked></td>
+                {% else %}
+                <td><input type="checkbox" class="foreignkey checkbox" value="{{ fk.id }}"></td>
+                {% endif %}
+                {% if fk.type == "object" %}
+                    <td>string</td>
+                {% elif fk.type == "float64" or fk.type == "int64" %}
+                    <td>number</td>
+                {% endif %}
+                <td>{{ fk.from_table }}</td>
+                <td>{{ fk.from_column }}</td>
+                <td>{{ fk.to_table }}</td>
+                <td>{{ fk.to_column }}</td>
+                <td>{{ fk.percentage }} %</td>
+            </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+{% endif %}
+</div>
+{% endblock content %}
+{% block scripts %}
+    <script type="text/javascript" src="{{ url_for('static', filename='setforeignkeys.js') }}"></script>
+{% endblock scripts %}

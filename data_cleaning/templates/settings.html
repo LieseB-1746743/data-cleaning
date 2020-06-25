@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% block head %}
+{% endblock head %}
+{% block title %}
+Settings
+{% endblock title %}
+{% block content %}
+<h2>Default Settings</h2>
+<h6 style="margin-top: 20px;">Settings that can be overruled</h6>
+<p style="margin-bottom: 20px;"><i>Changing one of these settings will change the setting for all columns where it applies. They can also be set separately for every column.</i></p>
+<div class="form-group row">
+    <label for="NullAction" class="col col-form-label col-form-label-sm">On NULL value detection:</label>
+    <div class="col">
+    <select id="NullAction" class="form-control form-control-sm">
+        <option value=1 {{ "selected='selected'" if on_null_detect==1 else '' }}>Flag</option>
+        <option value=2 {{ "selected='selected'" if on_null_detect==2 else '' }}>Remove row</option>
+        <option value=3 {{ "selected='selected'" if on_null_detect==3 else '' }}>Ignore</option>
+    </select>
+    </div>
+</div>
+<div class="form-group row">
+    <label for="OutlierAction" class="col col-form-label col-form-label-sm">On outlier detection:</label>
+    <div class="col">
+    <select id="OutlierAction" class="form-control form-control-sm">
+        <option value=1 {{ "selected='selected'" if on_outlier_detect==1 else '' }}>Flag</option>
+        <option value=2 {{ "selected='selected'" if on_outlier_detect==2 else '' }}>Replace outlier value by NULL</option>
+        <option value=3 {{ "selected='selected'" if on_outlier_detect==3 else '' }}>Remove row</option>
+        <option value=4 {{ "selected='selected'" if on_outlier_detect==4 else '' }}>Ignore</option>
+    </select>
+    </div>
+</div>
+<div class="form-group row">
+    <label for="FutureDateAction" class="col col-form-label col-form-label-sm">On future date detection:</label>
+    <div class="col">
+    <select id="FutureDateAction" class="form-control form-control-sm">
+        <option value=1 {{ "selected='selected'" if on_future_date_detect==1 else '' }}>Flag</option>
+        <option value=2 {{ "selected='selected'" if on_future_date_detect==2 else '' }}>Replacy future date by NULL</option>
+        <option value=3 {{ "selected='selected'" if on_future_date_detect==3 else '' }}>Remove row</option>
+        <option value=4 {{ "selected='selected'" if on_future_date_detect==4 else '' }}>Ignore</option>
+    </select>
+    </div>
+</div>
+<div class="form-group row">
+    <label for="DateFormat" class="col col-form-label col-form-label-sm">Default date format:</label>
+    <div class="col">
+    <select id="DateFormat" class="form-control form-control-sm">
+        {% for id, format_code in date_format_codes.items() %}
+            <option value="{{ id }}" {{ "selected='selected'" if date_format==id else '' }}>{{ format_code['example'] }}</option>
+        {% endfor %}
+    </select>
+    </div>
+</div>
+<h6 style="margin-top: 40px;">Settings that cannot be overruled</h6>
+<p style="margin-bottom: 20px;"><i>The following settings apply for all tables and cannot be overruled.</i></p>
+<div class="form-group row">
+    <label for="ForeignKeyAction" class="col col-form-label col-form-label-sm">On foreign key violation:</label>
+    <div class="col">
+    <select id="ForeignKeyAction" class="form-control form-control-sm">
+        <option value=1 {{ "selected='selected'" if on_fk_violation==1 else '' }}>Flag</option>
+        <option value=2 {{ "selected='selected'" if on_fk_violation==2 else '' }}>Remove row</option>
+        <option value=3 {{ "selected='selected'" if on_fk_violation==3 else '' }}>Ignore</option>
+    </select>
+    </div>
+</div>
+<div class="form-group row">
+    <label for="DenialConstraintAction" class="col col-form-label col-form-label-sm">On smaller than constraint violation:</label>
+    <div class="col">
+    <select id="DenialConstraintAction" class="form-control form-control-sm">
+        <option value=1 {{ "selected='selected'" if on_dc_violation==1 else '' }}>Flag</option>
+        <option value=2 {{ "selected='selected'" if on_dc_violation==2 else '' }}>Remove row</option>
+        <option value=3 {{ "selected='selected'" if on_dc_violation==3 else '' }}>Ignore</option>
+    </select>
+    </div>
+</div>
+<div class="form-group row">
+    <label for="DuplicateAction" class="col col-form-label col-form-label-sm">On duplicate detection:</label>
+    <div class="col">
+    <select id="DuplicateAction" class="form-control form-control-sm">
+        <option value=1 {{ "selected='selected'" if on_duplicate_detect==1 else '' }}>Flag all duplicate rows</option>
+        <option value=5 {{ "selected='selected'" if on_duplicate_detect==5 else '' }}>Flag all duplicate rows except for the first occurrence</option>
+        <option value=2 {{ "selected='selected'" if on_duplicate_detect==2 else '' }}>Drop all duplicate rows</option>
+        <option value=3 {{ "selected='selected'" if on_duplicate_detect==3 else '' }}>Drop all duplicate rows except for the first occurence</option>
+        <option value=4 {{ "selected='selected'" if on_duplicate_detect==4 else '' }}>Ignore</option>
+    </select>
+    </div>
+</div>
+<div class="form-group row">
+    <label for="FunctionalDependencyAction" class="col col-form-label col-form-label-sm">On functional dependency violation:</label>
+    <div class="col">
+    <select id="FunctionalDependencyAction" class="form-control form-control-sm">
+        <option value=1 {{ "selected='selected'" if on_fd_violation==1 else '' }}>Flag</option>
+        <option value=2 {{ "selected='selected'" if on_fd_violation==2 else '' }}>Remove row</option>
+        <option value=3 {{ "selected='selected'" if on_fd_violation==3 else '' }}>Ignore</option>
+    </select>
+    </div>
+</div>
+{% endblock content %}
+{% block scripts %}
+    <script type="text/javascript" src="{{ url_for('static', filename='settings.js') }}"></script>
+{% endblock scripts %}

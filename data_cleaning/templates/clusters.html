@@ -1,0 +1,47 @@
+<div>
+  <form class="form-inline" style="margin-bottom:10px;" onSubmit="return false">
+    Hide clusters where at least
+    <input type="number" class="form-control form-control-sm cluster-filter" min=0 max=100 step=1 value={{filter_percentage}} data-column="{{ columnname }}" style="margin:0px 5px; max-width:70px;"></input>
+    percent of the values are the same.
+  </form>
+  <table class="table table-hover table-sm">
+    <thead>
+        <th scope="col">Merge cluster?</th>
+        <th scope="col">Values in cluster</th>
+        <th scope="col">New value</th>
+    </thead>
+    <tbody>
+      {% for cluster in clusters_of_column %}
+        {% if cluster.max_occurrences_percentage >= filter_percentage %}
+          <tr style="display: none;" id="{{ columnname }}-cluster-row-{{ cluster.id }}" class="cluster-{{ columnname }}" data-percentage="{{ cluster.max_occurrences_percentage }}">
+        {% else %}
+          <tr id="{{ columnname }}-cluster-row-{{ cluster.id }}" class="cluster-{{ columnname }}" data-percentage="{{ cluster.max_occurrences_percentage }}">
+        {% endif %}
+            {% if cluster.selected %}
+            <td>
+              <input value="{{ cluster.id }}" type="checkbox" class="cluster-select" data-column="{{ columnname }}" data-table="{{ tablename }}" checked>
+            </td>
+            {% else %}
+            <td><input value="{{ cluster.id }}" type="checkbox" class="cluster-select" data-column="{{ columnname }}" data-table="{{ tablename }}"></td>
+            {% endif %}            
+            <td>
+              {% for content in cluster.content %}
+              <div class="clusteritem-{{ cluster.id }}">
+                <input type="checkbox" id="{{ content.value }}" data-clusterid="{{ cluster.id }}"/>
+                <label for="{{ content.value }}" style="margin-bottom: 0px;" data-value="{{ content.value }}">{{ content.value }} ({{ content.duplicates }} rows)</label>
+                <br/>
+              </div>
+              {% endfor %}
+              <button type="button" class="btn btn-sm btn-link split-cluster" data-toggle="tooltip" data-placement="right" title="Move selected strings to a seperate cluster" data-clusterid="{{ cluster.id }}" data-column="{{ columnname }}" data-table="{{ tablename }}">Split</button>
+                <!--<ul>
+                    {% for content in cluster.content %}
+                        <li>{{ content.value }} ({{ content.duplicates }} rows)</li>
+                    {% endfor %}    
+                </ul>-->
+            </td>
+            <td><input type="text" value="{{ cluster.replaceby }}" data-id="{{ cluster.id }}" data-column="{{ columnname }}" data-table="{{ tablename }}" class="form-control form-control-sm new-cluster-value"></td>
+          </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
