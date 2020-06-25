@@ -1,1 +1,15 @@
-# data-cleaning
+# Data Cleaning Tool
+### Dependencies
+The tool is written in Python3 and depends on the following libraries:
+Name | URL | Install
+:--- | :--- | :---
+scikit-learn | https://scikit-learn.org/stable/index.html | ```pip install scikit-learn```
+Flask | https://flask.palletsprojects.com/en/1.1.x/ | ```pip install Flask```
+Pandas | https://pandas.pydata.org/ | ```pip install pandas```
+
+Make sure you have Python3 and pip installed with the dependencies in the table above.
+### Usage
+1. Go to data_cleaning/tables.txt and insert the absolute paths of the .csv-files that you want to clean. **Do not move, rename or delete this file!**
+2. Go to the root folder of this project and execute ```python -m data_cleaning.start_server```. This will start the server and process the data.
+    - To run the program on a specific port, run ```python -m data_cleaning.start_server -p PORTNUMBER```, with *PORTNUMBER* any portnumber you want. By default, the program will run on port 5000.
+3. Go to http://127.0.0.1:5000/ (or to another port) to use the client and start your cleaning procedure.
