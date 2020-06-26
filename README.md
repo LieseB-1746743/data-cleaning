@@ -1,11 +1,13 @@
 # Data Cleaning Tool
 ### Dependencies
-The tool is written in Python3 and depends on the following libraries:
+The backend of the tool is written in Python3 and depends on the following libraries:
 Name | URL | Install
 :--- | :--- | :---
 scikit-learn | https://scikit-learn.org/stable/index.html | ```pip install scikit-learn```
 Flask | https://flask.palletsprojects.com/en/1.1.x/ | ```pip install Flask```
+Jinja2 | https://jinja.palletsprojects.com/en/2.11.x/ | ```pip install Jinja2```
 Pandas | https://pandas.pydata.org/ | ```pip install pandas```
+Unidecode | https://pypi.org/project/Unidecode/ | ```pip install Unidecode```
 
 Make sure you have Python3 and pip installed with the dependencies in the table above.
 ### Usage
