@@ -64,7 +64,8 @@ class Table:
         """
         result = []
         for col in self.columns:
-            if self.get_column_type(col) != np.object:
+            type = self.get_column_type(col)
+            if type is None or type != np.object:
                 continue
             s = self.df[col].copy()
             value_counts = s.value_counts(sort=False)
@@ -264,8 +265,14 @@ class Table:
             return self.characteristics
 
     def get_noncluster_columns(self, cluster_columns):
+        """
+        Get list of columns that aren't selected for clustering, but can be clustered.
+        :param cluster_columns: columns detected and/or selected for clustering
+        :return: list of column names
+        """
         result = []
         for col in self.columns:
-            if (col not in cluster_columns) and (self.get_column_type(col) == np.object):
+            type = self.get_column_type(col)
+            if (col not in cluster_columns) and (type is not None) and (type == np.object):
                 result.append(col)
         return result
