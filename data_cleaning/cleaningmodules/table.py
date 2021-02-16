@@ -163,7 +163,11 @@ class Table:
 
         for colname in self.columns:
             type = self.get_column_type(colname)
-            if type == np.object:
+            if type is None:
+                result[colname] = {
+                    "Type": "No type detected - empty column"
+                }
+            elif type == np.object:
                 result[colname] = self.detect_characteristics_string(self.df[colname])
             elif np.issubdtype(type, np.number):
                 result[colname] = self.detect_characteristics_numeric(self.df[colname])
