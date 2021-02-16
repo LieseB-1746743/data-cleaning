@@ -34,7 +34,7 @@ class Table:
         outlier_detection = {}
         for col in self.columns:
             type = self.get_column_type(col)
-            if np.issubdtype(type, np.number) or np.issubdtype(type, np.datetime64):
+            if type is not None and (np.issubdtype(type, np.number) or np.issubdtype(type, np.datetime64)):
                 data = self.df[col]
                 od = OutlierDetection(data)
                 od.calc_interval()
