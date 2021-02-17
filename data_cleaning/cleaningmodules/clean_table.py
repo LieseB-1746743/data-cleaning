@@ -64,10 +64,10 @@ def clean_foreign_keys(on_fk_violation_action, table_name, df, foreign_keys):
                 df_cleaned = df_cleaned.loc[(df_cleaned[column].isin(merged_list)) | (df_cleaned[column].isna())]
             df_copy = df_cleaned
 
-        print("/t Successfully cleaned foreign key violations.")
+        print("\t Successfully cleaned foreign key violations.")
         return df_copy
     except Exception as e:
-        print("/t ERROR while cleaning foreign key violations:" + str(e))
+        print("\t ERROR while cleaning foreign key violations:" + str(e))
         return df
 
 
@@ -96,11 +96,11 @@ def clean_denial_constraints(on_dc_violation_action, table, df):
             df_copy["SMALLER_THAN_VIOLATION_INFO"] = flag_message
         elif on_dc_violation_action == OnDenialConstraintViolation.REMOVE_ROW:
             df_copy = df_copy.loc[~flag]
-        print("/t Successfully cleaned <= constraint violations.")
+        print("\t Successfully cleaned <= constraint violations.")
         return df_copy
 
     except Exception as e:
-        print("/t ERROR while cleaning <= constraint violations:" + str(e))
+        print("\t ERROR while cleaning <= constraint violations:" + str(e))
         return df
 
 
@@ -131,11 +131,11 @@ def clean_functional_dependencies(on_fd_violation_action, table, df):
         elif on_fd_violation_action == OnFunctionalDependencyViolation.REMOVE_ROW:
             df_copy = df_copy.loc[~flag]
 
-        print("/t Successfully cleaned functional dependency violations.")
+        print("\t Successfully cleaned functional dependency violations.")
         return df_copy
 
     except Exception as e:
-        print("/t ERROR while cleaning functional dependency violations:" + str(e))
+        print("\t ERROR while cleaning functional dependency violations:" + str(e))
         return df
 
 
@@ -195,11 +195,11 @@ def clean_null_values(table, df):
             df_copy["NULL_FLAG"] = flag
             df_copy["NULL_FLAG_INFO"] = flag_message
 
-        print("/t Successfully cleaned NULL values.")
+        print("\t Successfully cleaned NULL values.")
         return df_copy
 
     except Exception as e:
-        print("/t ERROR while cleaning NULL values:" + str(e))
+        print("\t ERROR while cleaning NULL values:" + str(e))
         return df
 
 
@@ -235,11 +235,11 @@ def clean_dates(table, df):
         if flag_activated:
             df_copy["FUTURE_DATE_FLAG"] = flag
             df_copy["FUTURE_DATE_FLAG_INFO"] = flag_message
-        print("/t Successfully cleaned future dates.")
+        print("\t Successfully cleaned future dates.")
         return df_copy
 
     except Exception as e:
-        print("/t ERROR while cleaning future dates:" + str(e))
+        print("\t ERROR while cleaning future dates:" + str(e))
         return df
 
 
@@ -285,11 +285,11 @@ def clean_duplicates(on_duplicate_action, table, df):
                 df_copy["DUPLICATE_FLAG"] = flag
                 df_copy["DUPLICATE_FLAG_MESSAGE"] = flag_message
 
-        print("/t Successfully cleaned duplicates (unique constraint violations).")
+        print("\t Successfully cleaned duplicates (unique constraint violations).")
         return df_copy
 
     except Exception as e:
-        print("/t ERROR while cleaning duplicates (unique constraint violations):" + str(e))
+        print("\t ERROR while cleaning duplicates (unique constraint violations):" + str(e))
         return df
 
 
@@ -331,11 +331,11 @@ def clean_outliers(table, df):
             df_copy["OUTLIER_FLAG"] = flag
             df_copy["OUTLIER_FLAG_INFO"] = flag_message
 
-        print("/t Successfully cleaned outliers.")
+        print("\t Successfully cleaned outliers.")
         return df_copy
 
     except Exception as e:
-        print("/t ERROR while cleaning outliers:" + str(e))
+        print("\t ERROR while cleaning outliers:" + str(e))
         return df
 
 
@@ -352,9 +352,9 @@ def clean_clustered_columns(table, df):
                 values_to_replace = cluster.get_strings_in_cluster()
                 df_copy.loc[df_copy[col].isin(values_to_replace), col] = new_value
 
-        print("/t Successfully cleaned clustered columns.")
+        print("\t Successfully cleaned clustered columns.")
         return df_copy
 
     except Exception as e:
-        print("/t ERROR while cleaning clustered columns:" + str(e))
+        print("\t ERROR while cleaning clustered columns:" + str(e))
         return df
