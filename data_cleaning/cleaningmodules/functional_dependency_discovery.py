@@ -154,6 +154,6 @@ class FunctionalDependencyDiscovery:
         subset_size = self.calc_subset_size(df)
         df_sub = df.head(subset_size)
 
-        columns = [col for col in list(df_sub.columns) if df_sub[col].dtype != type(True)]
+        columns = [col for col in list(df_sub.columns) if df_sub[col].dtype != type(True) and self.table.get_column_type(col) is not None]
         self.calc_fds_on_subset(df, df_sub, columns)
         self.functional_dependencies = sorted(self.functional_dependencies, key=lambda fd: fd.percentage, reverse=True)

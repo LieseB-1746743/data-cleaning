@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 
 class DenialConstraint:
@@ -73,9 +74,12 @@ class DenialConstraintDiscovery:
         :return: Denial constraints as a sorted list of dictionaries.
         """
         df = self.table.get_dataframe()
-        for type in ["datetime", "number"]:
-            df_sub = df.select_dtypes(include=type)
-            self.discover_constraints_of_type(df_sub)
+        date_columns = [col for col in self.table.columns if self.table.get_column_type(col) is not None and np.issubdtype(self.table.get_column_type(col), np.datetime64)]
+        df_sub_date = df[date_columns]
+        numeric_cols = [col for col in self.table.columns if self.table.get_column_type(col) is not None and np.issubdtype(self.table.get_column_type(col), np.number)]
+        df_sub_num = df[numeric_cols]
+        self.discover_constraints_of_type(df_sub_date)
+        self.discover_constraints_of_type(df_sub_num)
 
         denial_constraints_sorted = self.sort_denial_constraints()
         list_of_dicts = list(map(lambda dc: dc.to_json(), denial_constraints_sorted))
