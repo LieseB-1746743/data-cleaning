@@ -75,7 +75,8 @@ def rules(tablename):
                                selected_dc=table.rules.dc_ids_selected,
                                foreign_keys=foreignkeys, uniqueconstraints=table.rules.unique_constraints,
                                clusters=clusters, filter_percentage=100,
-                               functional_dependencies=functional_dependencies), 200
+                               functional_dependencies=functional_dependencies,
+                               fds_enabled=global_settings.enable_fds), 200
     else:
         return "", 404
 
@@ -246,7 +247,8 @@ def settings():
                                on_fk_violation=global_settings.on_foreign_key_violation.value,
                                on_dc_violation=global_settings.on_denial_constraint_violation.value,
                                on_fd_violation=global_settings.on_functional_dependency_violation.value,
-                               date_format_codes=format_codes, date_format=global_settings.date_format_code), 200
+                               date_format_codes=format_codes, date_format=global_settings.date_format_code,
+                               fds_enabled=global_settings.enable_fds), 200
     elif request.method == "POST":
         try:
             if request.json["settingname"] == "outlieraction":
@@ -311,6 +313,7 @@ for opt, arg in options:
         print("Discovering functional dependencies...")
         for tablename in tablenames:
             tables[tablename].rules.functional_dependency_discovery.calc_fds()
-
+        global_settings.enable_fds=True
+        global_settings.set_on_functional_dependency_violation_action(1)  # flag
 
 app.run(debug=False, port=port)

@@ -85,12 +85,20 @@ Settings
     </div>
 </div>
 <div class="form-group row">
+    {% if fds_enabled %}
     <label for="FunctionalDependencyAction" class="col col-form-label col-form-label-sm">On functional dependency violation:</label>
+    {% else %}
+    <label for="FunctionalDependencyAction" class="col col-form-label col-form-label-sm">On functional dependency violation:<p class="text-info font-weight-light"> (disabled)</p></label>
+    {% endif %}
     <div class="col">
     <select id="FunctionalDependencyAction" class="form-control form-control-sm">
+        {% if fds_enabled %}
         <option value=1 {{ "selected='selected'" if on_fd_violation==1 else '' }}>Flag</option>
         <option value=2 {{ "selected='selected'" if on_fd_violation==2 else '' }}>Remove row</option>
         <option value=3 {{ "selected='selected'" if on_fd_violation==3 else '' }}>Ignore</option>
+        {% else %}
+        <option value=3 {{ "selected='selected'" if on_fd_violation==3 else '' }}>Ignore</option>
+        {% endif %}
     </select>
     </div>
 </div>

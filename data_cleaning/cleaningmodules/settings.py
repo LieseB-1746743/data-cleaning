@@ -12,7 +12,8 @@ class Settings:
         self.date_format_code = 5
         self.on_foreign_key_violation = OnForeignKeyViolation.FLAG
         self.on_denial_constraint_violation = OnDenialConstraintViolation.FLAG
-        self.on_functional_dependency_violation = OnFunctionalDependencyViolation.FLAG
+        self.on_functional_dependency_violation = OnFunctionalDependencyViolation.IGNORE
+        self.enable_fds = False
 
     def set_outlier_action(self, action):
         """
