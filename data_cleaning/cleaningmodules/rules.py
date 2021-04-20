@@ -16,10 +16,6 @@ class Rules:
         self.unique_constraint_counter = 0
         self.date_columns = date_columns
         self.functional_dependency_discovery = fd_discovery
-        try:
-            self.functional_dependency_discovery.calc_fds()
-        except Exception:
-            return
 
     def init_date_rules(self, date_columns):
         on_future_date_detect = {}

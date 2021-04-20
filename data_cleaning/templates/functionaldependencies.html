@@ -1,38 +1,42 @@
-{% if functional_dependencies|length > 0 %}
-<p style="margin-bottom: 20px"><i>A functional dependency A -> B means that the contents of B are determined by the contents of A. A is called the left-hand-side and B the right-hand-side. There cannot exists two tuples with the same value for A but a different value for B.
-    To choose what needs to happen when a functional dependency is being violated, go to settings or click <a href="{{ url_for('settings') }}">here</a> and change the 'on functional dependency violation' action.</i></p>
-<button id="select-all" type="button" class="btn btn-outline-secondary btn-sm">Select all</button>
-<button id="unselect-all" type="button" class="btn btn-outline-secondary btn-sm">Unselect all</button>
-<div class="table-responsive" style="margin-top: 5px;">
-    <table class="table table-hover table-sm">
-        <thead>
-            <th scope="col">Select</th>
-            <th scope="col">Left-hand-side</th>
-            <th scope="col">&rarr;</th>
-            <th scope="col">Right-hand-side</th>
-            <th scope="col">Valid for</th>
-        </thead>
-        <tbody>
-            {% for fd in functional_dependencies %}
-            <tr>
-                {% if fd.checked %}
-                    <td><input type="checkbox" class="functional-dependency" value="{{ fd.id }}" checked></td>            
-                {% else %}
-                    <td><input type="checkbox" class="functional-dependency" value="{{ fd.id }}"></td>
-                {% endif %}
-                <td>
-                    {% for attr in fd.lhs %}
-                        {{ attr }}{{ "," if not loop.last }}
-                    {% endfor %}</td>
-                <td>&rarr;</td>
-                <td>{{ fd.rhs }}</td>
-                <td>{{ fd.percentage }} %</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+{% if fds_enabled %}
+    {% if functional_dependencies|length > 0 %}
+    <p style="margin-bottom: 20px"><i>A functional dependency A -> B means that the contents of B are determined by the contents of A. A is called the left-hand-side and B the right-hand-side. There cannot exists two tuples with the same value for A but a different value for B.
+        To choose what needs to happen when a functional dependency is being violated, go to settings or click <a href="{{ url_for('settings') }}">here</a> and change the 'on functional dependency violation' action.</i></p>
+    <button id="select-all" type="button" class="btn btn-outline-secondary btn-sm">Select all</button>
+    <button id="unselect-all" type="button" class="btn btn-outline-secondary btn-sm">Unselect all</button>
+    <div class="table-responsive" style="margin-top: 5px;">
+        <table class="table table-hover table-sm">
+            <thead>
+                <th scope="col">Select</th>
+                <th scope="col">Left-hand-side</th>
+                <th scope="col">&rarr;</th>
+                <th scope="col">Right-hand-side</th>
+                <th scope="col">Valid for</th>
+            </thead>
+            <tbody>
+                {% for fd in functional_dependencies %}
+                <tr>
+                    {% if fd.checked %}
+                        <td><input type="checkbox" class="functional-dependency" value="{{ fd.id }}" checked></td>
+                    {% else %}
+                        <td><input type="checkbox" class="functional-dependency" value="{{ fd.id }}"></td>
+                    {% endif %}
+                    <td>
+                        {% for attr in fd.lhs %}
+                            {{ attr }}{{ "," if not loop.last }}
+                        {% endfor %}</td>
+                    <td>&rarr;</td>
+                    <td>{{ fd.rhs }}</td>
+                    <td>{{ fd.percentage }} %</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p>No functional dependencies found.</p>
+    {% endif %}
 {% else %}
-<p>No functional dependencies found.</p>
+<p>This functionality is disabled by default.<br/>To enable functional dependencies, add <code>--enable-functional-dependencies</code> to the startup command.</p>
 {% endif %}
 <p id="tablename" hidden>{{ tablename }}</p>

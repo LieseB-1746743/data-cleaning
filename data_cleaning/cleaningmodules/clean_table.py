@@ -12,7 +12,8 @@ def clean_table(settings, foreign_keys, table):
     df_to_clean = table.df.copy()
     cleaned_df = clean_foreign_keys(settings.on_foreign_key_violation, table.name, df_to_clean, foreign_keys)
     cleaned_df = clean_denial_constraints(settings.on_denial_constraint_violation, table, cleaned_df)
-    cleaned_df = clean_functional_dependencies(settings.on_functional_dependency_violation, table, cleaned_df)
+    if not settings.on_functional_dependency_violation == OnFunctionalDependencyViolation.IGNORE:
+        cleaned_df = clean_functional_dependencies(settings.on_functional_dependency_violation, table, cleaned_df)
     cleaned_df = clean_dates(table, cleaned_df)
     cleaned_df = clean_duplicates(settings.on_duplicate_detect, table, cleaned_df)
     cleaned_df = clean_outliers(table, cleaned_df)
