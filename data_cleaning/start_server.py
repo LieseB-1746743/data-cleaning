@@ -303,9 +303,14 @@ def clean(tablename):
 
 
 port = 5000
-options, remainder = getopt.getopt(sys.argv[1:], "p:", ["port="])
+options, remainder = getopt.getopt(sys.argv[1:], "p:", ["port=", "enable-functional-dependencies"])
 for opt, arg in options:
     if opt in ('-p', '--port'):
         port = int(arg)
+    if opt in ['--enable-functional-dependencies']:
+        print("Discovering functional dependencies...")
+        for tablename in tablenames:
+            tables[tablename].rules.functional_dependency_discovery.calc_fds()
+
 
 app.run(debug=False, port=port)
